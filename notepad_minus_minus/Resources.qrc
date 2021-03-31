@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/copyIcon.png</file>
+        <file>icons/cutIcon.png</file>
+        <file>icons/newIcon.jpg</file>
+        <file>icons/openIcon.webp</file>
+        <file>icons/pasteIcon.png</file>
+        <file>icons/redoIcon.webp</file>
+        <file>icons/saveIcon.png</file>
+        <file>icons/undoIcon.webp</file>
+    </qresource>
+</RCC>
