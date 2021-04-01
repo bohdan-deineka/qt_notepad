@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     // Create main application object.
     MainWindow w;
-    // Display applicztion on the screen.
+    // Display application on the screen.
     w.show();
 
     // Put an application into infinite loop.
