@@ -1,13 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "findreplacedialog.h"
 
 MainWindow::MainWindow(QWidget *parent) // Constructor of our applicztion window.
     : QMainWindow(parent)               // Parent constructor.
     , ui(new Ui::MainWindow)            // Create object of class Ui.
 {
     ui->setupUi(this);                      // Set up the UI.
-    this->setCentralWidget(ui->textEdit);   // Set textEdit as central widget.
-                                            // textEdit now fills the application window.
+    this->setCentralWidget(ui->plainTextEdit);   // Set plainTextEdit as central widget.
+                                                 // plainTextEdit now fills the application window.
+    connect(ui->plainTextEdit, SIGNAL(cursorPositionChanged()), this, SLOT(showCursorPos()));
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +21,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionNew_triggered()
 {
     currFile.clear();                       // Clear current file name.
-    ui->textEdit->setText(QString());       // Erase the editor.
+    ui->plainTextEdit->setPlainText(QString());       // Erase the editor.
 }
 
 // Action when Open menu option clicked.
@@ -34,7 +36,7 @@ void MainWindow::on_actionOpen_triggered()
     setWindowTitle(filename);                           
     QTextStream in(&file);
     QString text = in.readAll();
-    ui->textEdit->setText(text);
+    ui->plainTextEdit->setPlainText(text);
     
     file.close();
 }
@@ -49,7 +51,7 @@ void MainWindow::on_actionSave_triggered()
 
     setWindowTitle(filename);
     QTextStream out(&file);
-    QString text = ui->textEdit->toPlainText();
+    QString text = ui->plainTextEdit->toPlainText();
     out << text;
 
     file.close();
@@ -62,25 +64,39 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionCut_triggered()
 {
-    ui->textEdit->cut();
+    ui->plainTextEdit->cut();
 }
 
 void MainWindow::on_actionCopy_triggered()
 {
-    ui->textEdit->copy();
+    ui->plainTextEdit->copy();
 }
 
 void MainWindow::on_actionPaste_triggered()
 {
-    ui->textEdit->paste();
+    ui->plainTextEdit->paste();
 }
 
 void MainWindow::on_actionRedo_triggered()
 {
-    ui->textEdit->redo();
+    ui->plainTextEdit->redo();
 }
 
 void MainWindow::on_actionUndo_triggered()
 {
-    ui->textEdit->undo();
+    ui->plainTextEdit->undo();
+}
+
+void MainWindow::showCursorPos()
+{
+    int line = ui->plainTextEdit->textCursor().blockNumber()+1;
+    int pos = ui->plainTextEdit->textCursor().columnNumber()+1;
+    ui->statusbar->showMessage(QString("Ln %1, Col %2").arg(line).arg(pos));
+}
+
+void MainWindow::on_actionFind_triggered()
+{
+    FindReplaceDialog *dialog = new FindReplaceDialog();
+    dialog->setEditor(ui->plainTextEdit);
+    dialog->show();
 }

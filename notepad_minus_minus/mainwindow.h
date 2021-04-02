@@ -39,6 +39,10 @@ private slots:
 
     void on_actionUndo_triggered();
 
+    void showCursorPos();
+
+    void on_actionFind_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString currFile = "";
